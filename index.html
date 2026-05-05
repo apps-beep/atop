@@ -579,7 +579,7 @@
     <li><a href="#content">Content</a></li>
     <li><a href="#how">How It Works</a></li>
     <li><a href="#about">About</a></li>
-    <li><a href="#" onclick="showPrivacy(event)">Privacy</a></li>
+    <li><a href="#privacy">Privacy</a></li>
   </ul>
   <a href="#download" class="btn-primary nav-cta">Download Free</a>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -866,7 +866,7 @@
             <div>
               <div class="ci-label">Privacy Policy</div>
               <div class="ci-value">
-                <a href="#" onclick="showPrivacy(event)" style="color:var(--primary);">View Policy →</a>
+                <a href="#privacy" style="color:var(--primary);">View Policy →</a>
               </div>
             </div>
           </div>
@@ -886,7 +886,7 @@
 
 <!-- ══════════════════════════════════════════════════════════════ PRIVACY -->
 <div class="legal-page" id="privacyPage">
-  <span class="legal-back" onclick="hidePrivacy()">← Back to Home</span>
+  <a class="legal-back" href="#">← Back to Home</a>
   <div class="legal-content">
     <h1>Privacy Policy</h1>
     <p class="updated">Last updated: 2025</p>
@@ -957,7 +957,7 @@
     <div class="footer-col">
       <h4>Legal</h4>
       <ul>
-        <li><a href="#" onclick="showPrivacy(event)">Privacy Policy</a></li>
+        <li><a href="#privacy">Privacy Policy</a></li>
         <li><a href="https://www.themoviedb.org/" target="_blank">TMDB</a></li>
         <li><a href="https://www.youtube.com/" target="_blank">YouTube</a></li>
         <li><a href="https://play.google.com/store/apps/details?id=com.thoptv2.app" target="_blank">Play Store</a></li>
@@ -968,69 +968,54 @@
     <span>© 2025 THOP TV. All rights reserved.</span>
     <span>
       Powered by <a href="https://www.themoviedb.org/" target="_blank">TMDB</a> &nbsp;·&nbsp;
-      <a href="#" onclick="showPrivacy(event)">Privacy Policy</a>
+      <a href="#privacy">Privacy Policy</a>
     </span>
   </div>
 </footer>
 
 <script>
+  const main   = document.getElementById('mainContent');
+  const privacy = document.getElementById('privacyPage');
+  const foot   = document.querySelector('footer');
+
+  function route() {
+    if (window.location.hash === '#privacy') {
+      main.style.display    = 'none';
+      foot.style.display    = 'none';
+      privacy.classList.add('active');
+      document.title = 'Privacy Policy — THOP TV';
+    } else {
+      main.style.display    = 'block';
+      foot.style.display    = 'block';
+      privacy.classList.remove('active');
+      document.title = 'THOP TV — Movies & TV Shows Trailers';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* Run on every hash change (covers clicks on href="#privacy" and back button) */
+  window.addEventListener('hashchange', route);
+
+  /* Run once on page load in case URL already contains #privacy */
+  route();
+
   /* ── Mobile nav toggle ──────────────────────────────────────────── */
   function toggleMenu() {
     document.getElementById('navLinks').classList.toggle('open');
   }
 
-  /* ── Privacy page ───────────────────────────────────────────────── */
-  function showPrivacy(e) {
-    e && e.preventDefault();
-    document.getElementById('mainContent').style.display = 'none';
-    document.getElementById('privacyPage').classList.add('active');
-    document.querySelector('footer').style.display = 'none';
-    window.history.pushState({ page: 'privacy' }, 'Privacy Policy — THOP TV', '#privacy');
-    document.title = 'Privacy Policy — THOP TV';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function hidePrivacy() {
-    document.getElementById('mainContent').style.display = 'block';
-    document.getElementById('privacyPage').classList.remove('active');
-    document.querySelector('footer').style.display = 'block';
-    window.history.pushState({ page: 'home' }, 'THOP TV — Movies & TV Shows Trailers', window.location.pathname);
-    document.title = 'THOP TV — Movies & TV Shows Trailers';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  /* ── Handle browser back/forward buttons ───────────────────────── */
-  window.addEventListener('popstate', (e) => {
-    if (window.location.hash === '#privacy') {
-      document.getElementById('mainContent').style.display = 'none';
-      document.getElementById('privacyPage').classList.add('active');
-      document.querySelector('footer').style.display = 'none';
-      document.title = 'Privacy Policy — THOP TV';
-    } else {
-      document.getElementById('mainContent').style.display = 'block';
-      document.getElementById('privacyPage').classList.remove('active');
-      document.querySelector('footer').style.display = 'block';
-      document.title = 'THOP TV — Movies & TV Shows Trailers';
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  /* ── On page load: open privacy if URL already has #privacy ────── */
-  if (window.location.hash === '#privacy') showPrivacy();
-
-  /* ── Navbar shadow on scroll ────────────────────────────────────── */
-  window.addEventListener('scroll', () => {
-    const nav = document.getElementById('navbar');
-    nav.style.boxShadow = window.scrollY > 10
-      ? '0 2px 24px rgba(0,0,0,.4)'
-      : 'none';
-  });
-
-  /* ── Close hamburger on link click ─────────────────────────────── */
+  /* ── Close hamburger when any nav link is clicked ───────────────── */
   document.querySelectorAll('.nav-links a').forEach(link => {
     link.addEventListener('click', () => {
       document.getElementById('navLinks').classList.remove('open');
     });
+  });
+
+  /* ── Navbar shadow on scroll ────────────────────────────────────── */
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.boxShadow = window.scrollY > 10
+      ? '0 2px 24px rgba(0,0,0,.4)'
+      : 'none';
   });
 </script>
 </body>
